@@ -1,0 +1,5 @@
+module.exports = {
+  mongoURI:
+    'mongodb+srv://christos0405:christos@jobconnector-lhhds.mongodb.net/test',
+  secretOrKey: 'secret'
+};
