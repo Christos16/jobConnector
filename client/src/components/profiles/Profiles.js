@@ -31,9 +31,9 @@ class Profiles extends Component {
         <div className='container'>
           <div className='row'>
             <div className='col-md-12'>
-              <h3 className='display-4 text-center'>
+              <h5 className='display-4 text-center'>
                 Business Specialist/Developer profiles
-              </h3>
+              </h5>
               <p className='lead text-center'>
                 Browse and connect with business specialists/developers
               </p>
