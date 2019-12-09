@@ -11,9 +11,6 @@ const Profile = require('../../models/Profile');
 //Load User Profile
 const User = require('../../models/User');
 
-//We don't have to assign /api/users/test because in the server.js,
-//We already assigned the routes above to user
-// res.json is similar to res.send but the only difference is that it output json structured text or data
 router.get('/test', (req, res) => res.json({ msg: 'Profile works' }));
 
 // @route GET api/profile/handle/:handle

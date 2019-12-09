@@ -76,43 +76,38 @@ router.post('/login', (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  // Now we find the user by email using mongoose
-  User.findOne({ email }) //This will give a promise so .then
-    .then(user => {
-      //Check for user: If there's no users then we'll return res.status(Not found)
-      if (!user) {
-        errors.email = 'User not found';
-        return res.status(404).json(errors);
+  User.findOne({ email }).then(user => {
+    if (!user) {
+      errors.email = 'User not found';
+      return res.status(404).json(errors);
+    }
+
+    bcrypt.compare(password, user.password).then(isMatch => {
+      if (isMatch) {
+        const payload = { id: user.id, name: user.name, avatar: user.avatar };
+
+        //Sign Token (See as well Json documentation)
+        // We need to send an expiration if we want it to expire after a certain amount of time
+
+        //Create JWT payload
+
+        jwt.sign(
+          payload,
+          keys.secretOrKey,
+          { expiresIn: 3600 },
+          (err, token) => {
+            res.json({
+              success: true,
+              token: 'Bearer ' + token
+            });
+          }
+        );
+      } else {
+        errors.password = 'Password incorrect';
+        return res.status(400).json(errors);
       }
-      //After finding the user email, we need to check the password
-      //NB: the password that the user type up there is plain text but the password that is in the database is hash
-      //So we use bcrypt to compare the two
-      bcrypt.compare(password, user.password).then(isMatch => {
-        if (isMatch) {
-          const payload = { id: user.id, name: user.name, avatar: user.avatar };
-
-          //Sign Token (See as well Json documentation)
-          // We need to send an expiration if we want it to expire after a certain amount of time
-
-          //Create JWT payload
-
-          jwt.sign(
-            payload,
-            keys.secretOrKey,
-            { expiresIn: 3600 },
-            (err, token) => {
-              res.json({
-                success: true,
-                token: 'Bearer ' + token
-              });
-            }
-          );
-        } else {
-          errors.password = 'Password incorrect';
-          return res.status(400).json(errors);
-        }
-      });
     });
+  });
 });
 
 //@route GET api/users/current
@@ -131,5 +126,4 @@ router.get(
   }
 );
 
-// We have to exports the route for the server.js to pick it up
 module.exports = router;

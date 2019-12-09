@@ -13,12 +13,10 @@ class CreateProfile extends Component {
     this.state = {
       displaySocialInputs: false,
       handle: '',
-      company: '',
-      website: '',
+
       location: '',
-      status: '',
-      skills: '',
-      githubusername: '',
+      size: '',
+      breed: '',
       bio: '',
       twitter: '',
       facebook: '',
@@ -31,9 +29,6 @@ class CreateProfile extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  //Since we want to display the errors coming from redux since we send it from there and want to access it,
-  //We use the ComponentWillReceiveProps of errors if there are any in order to display them in the form
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
@@ -41,7 +36,6 @@ class CreateProfile extends Component {
   }
 
   onSubmit(e) {
-    //Whenever we call a redux property we use the props like this.props.createProfile
     e.preventDefault();
 
     const profileData = {
